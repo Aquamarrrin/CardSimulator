@@ -27,11 +27,25 @@ public class Editor {
                 case "info":
                     info();
                     break;
+                case "help":
+                    help();
+                    break;
+                default:
+                    System.out.println("Введите корректную команду");
+                    break;
             }
         }
     }
 
     public void info(){
         System.out.println("Информация об игре "+name);
+    }
+
+    private void help(){
+        System.out.println("Эта программа создана 5.02.2016");
+        System.out.println("help\t\t\tвызов справки");
+        System.out.println("end\t\t\tвыход из редактора игры");
+        System.out.println("info\t\t\tинформация об игре");
+
     }
 }

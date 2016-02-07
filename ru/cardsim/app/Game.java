@@ -32,6 +32,7 @@ public class Game implements Serializable{
 
     public void run(){
         boolean exit = false;
+        boolean switchOk = false;
         String comandStr="";
         System.out.println("Запущена игра "+name);
         System.out.println("/Главное меню/Игровое приложение/Игра "+name+"/");
@@ -41,23 +42,47 @@ public class Game implements Serializable{
             switch (comandStr = in.nextLine()) {
                 case "end":
                     exit=true;
+                    switchOk = true;
                     System.out.println("Выход из игры");
                     break;
                 case "info":
+                    switchOk = true;
                     info();
+                    break;
+                case "help":
+                    switchOk = true;
+                    help();
                     break;
             }
             if(comandStr.length()>2 && comandStr.charAt(0)=='m' &&  comandStr.charAt(1)==' ' ){
                 String[] split = comandStr.split(" ");
-                for (Method m : allMethods) {
-                    if(m.getName().equals(split[1]))
-                        func(m,null);
+                if(split.length>=2) {
+                    for (Method m : allMethods) {
+                        if(m.getName().equals(split[1]))
+                            func(m,null);
+                    }
                 }
+                else{
+                    System.out.println("Вы забыли указать имя функции");
+                }
+            }
+            else
+            if(!switchOk) {
+                System.out.println("Введите корректную команду");
             }
         }
     }
 
     public void info(){
         System.out.println("Информация об игре "+name);
+    }
+
+    private void help(){
+        System.out.println("Эта программа создана 5.02.2016");
+        System.out.println("help\t\t\tвызов справки");
+        System.out.println("end\t\t\tвыход из игры");
+        System.out.println("info\t\t\tинформация об игре");
+        System.out.println("m [Имя_метода]\t\t\tзапуск определенной функции в игре");
+
     }
 }

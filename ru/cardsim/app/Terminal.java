@@ -29,6 +29,9 @@ public class Terminal {
                 case "game":
                     createGame();
                     break;
+                default:
+                    System.out.println("Введите корректную команду");
+                    break;
             }
         }
     }
