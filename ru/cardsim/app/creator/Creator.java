@@ -1,4 +1,6 @@
-package ru.cardsim.app;
+package ru.cardsim.app.creator;
+
+import ru.cardsim.app.Game;
 
 import java.util.Scanner;
 

@@ -33,13 +33,13 @@ public class Game implements Serializable{
     public void run(){
         boolean exit = false;
         boolean switchOk = false;
-        String comandStr="";
+        String commandStr="";
         System.out.println("Запущена игра "+name);
         System.out.println("/Главное меню/Игровое приложение/Игра "+name+"/");
         Scanner in = new Scanner(System.in);
         while (!exit){
             System.out.print(">");
-            switch (comandStr = in.nextLine()) {
+            switch (commandStr = in.nextLine()) {
                 case "end":
                     exit=true;
                     switchOk = true;
@@ -54,8 +54,8 @@ public class Game implements Serializable{
                     help();
                     break;
             }
-            if(comandStr.length()>2 && comandStr.charAt(0)=='m' &&  comandStr.charAt(1)==' ' ){
-                String[] split = comandStr.split(" ");
+            if(commandStr.length()>2 && commandStr.charAt(0)=='m' &&  commandStr.charAt(1)==' ' ){
+                String[] split = commandStr.split(" ");
                 if(split.length>=2) {
                     for (Method m : allMethods) {
                         if(m.getName().equals(split[1]))

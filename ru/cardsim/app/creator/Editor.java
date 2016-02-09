@@ -1,5 +1,9 @@
-package ru.cardsim.app;
+package ru.cardsim.app.creator;
 
+import ru.cardsim.app.entities.Entity;
+import ru.cardsim.app.rules.Rule;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -7,8 +11,13 @@ import java.util.Scanner;
  */
 public class Editor {
     private String name;
+    private ArrayList<Entity> entities;
+    private ArrayList<Rule> rules;
+
     public Editor(String name) {
         this.name=name;
+        this.entities = new ArrayList<>();
+        this.rules = new ArrayList<>();
     }
 
     public void run(){
@@ -48,4 +57,7 @@ public class Editor {
         System.out.println("info\t\t\tинформация об игре");
 
     }
+
+
+
 }
