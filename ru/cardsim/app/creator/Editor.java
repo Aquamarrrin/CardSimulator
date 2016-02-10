@@ -62,6 +62,36 @@ public class Editor {
                         if (comandStr.contains("sh r")){
 
                         }
+                        else {
+                            if (comandStr.contains("sh <id ") && comandStr.contains(">")){
+
+                            }
+                            else {
+                                if (comandStr.contains("sh <idr ") && comandStr.contains(">")){
+
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (comandStr.contains("<id ") && comandStr.contains(">.<")){
+                        if( comandStr.contains("> <")){
+
+                        }
+                        else {
+
+                        }
+                    }
+                    else{
+                        if (comandStr.contains("<id ") && comandStr.contains(".setMethod1 <")){
+
+                        }
+                        else {
+                            if (comandStr.contains("<id ") && comandStr.contains(".setMethod2 <")){
+
+                            }
+                        }
                     }
                 }
             }
