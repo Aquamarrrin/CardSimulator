@@ -84,11 +84,11 @@ public class Editor {
                         }
                     }
                     else{
-                        if (comandStr.contains("<id ") && comandStr.contains(".setMethod1 <")){
+                        if (comandStr.contains("<idr ") && comandStr.contains(".setMethod1 <")){
 
                         }
                         else {
-                            if (comandStr.contains("<id ") && comandStr.contains(".setMethod2 <")){
+                            if (comandStr.contains("<idr ") && comandStr.contains(".setMethod2 <")){
 
                             }
                         }
