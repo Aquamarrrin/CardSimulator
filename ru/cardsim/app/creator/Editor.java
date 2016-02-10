@@ -43,6 +43,28 @@ public class Editor {
                     System.out.println("Введите корректную команду");
                     break;
             }
+            if (comandStr.contains("cr ")){
+                if (comandStr.contains("cr e")){
+
+                }
+                else{
+                    if (comandStr.contains("cr r")){
+
+                    }
+                }
+            }
+            else{
+                if (comandStr.contains("sh ")){
+                    if (comandStr.contains("sh e")){
+
+                    }
+                    else{
+                        if (comandStr.contains("sh r")){
+
+                        }
+                    }
+                }
+            }
         }
     }
 
