@@ -87,7 +87,11 @@ public class Editor {
                     else{
                         //Показать все правила
                         if (split[1].equals("r")){
-
+                            for (int i=0;i<rules.size();i++) {
+                                System.out.println("Условие: "+rules.get(i).getCondition());
+                                System.out.println("Метод1: "+rules.get(i).getMethod1());
+                                System.out.println("-----------------------------------------");
+                            }
                         }
                         else {
                             //Показать конкретную сущность
@@ -101,6 +105,9 @@ public class Editor {
                                 //Показать конкретное правило
                                 if (split.length>=3 && split[1].equals("r") && checkString(split[2])){
                                     int id = Integer.parseInt(split[2]);
+                                    System.out.println("Условие: "+rules.get(id-1).getCondition());
+                                    System.out.println("Метод1: "+rules.get(id-1).getMethod1());
+                                    System.out.println("-----------------------------------------");
                                 }
                             }
                         }
@@ -114,24 +121,38 @@ public class Editor {
                             Method[] methodsOfEntity=Entity.class.getDeclaredMethods();
                             int id = Integer.parseInt(split[0].substring(0,split[0].indexOf(".")));
                             for (Method m : methodsOfEntity) {
-                                if(m.getName().equals(split[0].substring(split[0].indexOf(".")+1)))
+                                if(m.getName().contains("set") && m.getName().equals(split[0].substring(split[0].indexOf(".")+1)))
                                     func(entities.get(id-1),m,new Object[]{split[1]});
                             }
                         }
                         else {
+                            Method[] methodsOfEntity=Entity.class.getDeclaredMethods();
+                            int id = Integer.parseInt(split[0].substring(0,split[0].indexOf(".")));
+                            for (Method m : methodsOfEntity) {
+                                if(m.getName().contains("get") && m.getName().equals(split[0].substring(split[0].indexOf(".")+1)))
+                                    func(entities.get(id-1),m,null);
+                            }
                         }
                     }
                     else{
                         //Задать Method1 правилу
                         if (split.length>=2 && checkString(split[0].substring(0,split[0].indexOf(".")))
                                 && split[0].contains(".setMethod1")){
-
+                            int id = Integer.parseInt(split[0].substring(0,split[0].indexOf(".")));
+                            for (Method m : allMethods) {
+                                if(m.getName().equals(split[1]))
+                                    rules.get(id).setMethod1(m);
+                            }
                         }
                         else {
                             //Задать Method2 правилу
                             if (split.length>=2 && checkString(split[0].substring(0,split[0].indexOf(".")))
                                     && split[0].contains(".setMethod2")){
-
+                                int id = Integer.parseInt(split[0].substring(0,split[0].indexOf(".")));
+                                for (Method m : allMethods) {
+                                    if(m.getName().equals(split[1]))
+                                        rules.get(id).setMethod2(m);
+                                }
                             }
                         }
                     }

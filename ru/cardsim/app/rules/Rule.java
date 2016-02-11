@@ -35,5 +35,27 @@ public class Rule {
         */
     }
 
+    public Condition getCondition() {
+        return condition;
+    }
 
+    public void setCondition(Condition condition) {
+        this.condition = condition;
+    }
+
+    public Method getMethod1() {
+        return method1;
+    }
+
+    public void setMethod1(Method method1) {
+        this.method1 = method1;
+    }
+
+    public Method getMethod2() {
+        return method2;
+    }
+
+    public void setMethod2(Method method2) {
+        this.method2 = method2;
+    }
 }
