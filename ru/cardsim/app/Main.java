@@ -7,11 +7,10 @@ import ru.cardsim.app.rules.Rule;
  */
 public class Main {
     public static void main(String[] args){
-        /*
+
         Terminal terminal = new Terminal();
         terminal.run();
-        */
-        new Rule();
+
     }
 
 }
