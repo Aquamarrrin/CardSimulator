@@ -4,7 +4,10 @@ import ru.cardsim.app.Functions;
 import ru.cardsim.app.entities.Entity;
 import ru.cardsim.app.rules.Condition;
 import ru.cardsim.app.rules.Rule;
+import ru.cardsim.app.rules.expressions.Equals;
+import ru.cardsim.app.rules.logicoperators.And;
 import ru.cardsim.app.rules.logicoperators.LogicOperator;
+import ru.cardsim.app.rules.logicoperators.Not;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -67,10 +70,11 @@ public class Editor {
                     //Создаем правило
                     if (split[1].equals("r")){
                         countOfRules=countOfRules+1;
-                        Condition condition = new Condition(new LogicOperator());
+                        Condition condition = new Condition(new And(new Equals("str", "str").getResult(), new Not(new Equals(1, 1).getResult()).getResult()));
                         Rule newRule = new Rule(condition, allMethods[0]);
+                        newRule.setId(countOfRules+1);
                         rules.add(newRule);
-                        System.out.println("Создано правило с id="+countOfRules);
+                        System.out.println("Создано правило с условием="+condition.getNameLo()+" и Методом = "+allMethods[1].getName());
                     }
                 }
             }
@@ -88,8 +92,9 @@ public class Editor {
                         //Показать все правила
                         if (split[1].equals("r")){
                             for (int i=0;i<rules.size();i++) {
-                                System.out.println("Условие: "+rules.get(i).getCondition());
-                                System.out.println("Метод1: "+rules.get(i).getMethod1());
+                                System.out.println("Условие: "+rules.get(i).getCondition().getNameLo());
+                                System.out.println("Метод1: "+rules.get(i).getMethod1().getName());
+                                System.out.println("id правила: "+rules.get(i).getId());
                                 System.out.println("-----------------------------------------");
                             }
                         }
@@ -105,8 +110,9 @@ public class Editor {
                                 //Показать конкретное правило
                                 if (split.length>=3 && split[1].equals("r") && checkString(split[2])){
                                     int id = Integer.parseInt(split[2]);
-                                    System.out.println("Условие: "+rules.get(id-1).getCondition());
+                                    System.out.println("Условие: "+rules.get(id-1).getCondition().getNameLo());
                                     System.out.println("Метод1: "+rules.get(id-1).getMethod1());
+                                    System.out.println("id правила: "+rules.get(id-1).getId());
                                     System.out.println("-----------------------------------------");
                                 }
                             }

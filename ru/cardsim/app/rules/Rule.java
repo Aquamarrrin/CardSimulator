@@ -15,6 +15,8 @@ public class Rule {
     private Condition condition;
     private Method method1;
     private Method method2;
+    private int id;
+
     public Rule(Condition condition, Method method1, Method method2) {
         /*
         //Делаем конвеер создания кондишенов
@@ -23,6 +25,10 @@ public class Rule {
 
         System.out.println("RESULT: "+result);
         */
+        this.condition=condition;
+        this.method1=method1;
+        this.method2=method2;
+        this.id  = 0;
     }
 
     public Rule(Condition condition, Method method1) {
@@ -33,6 +39,18 @@ public class Rule {
 
         System.out.println("RESULT: "+result);
         */
+
+        this.condition=condition;
+        this.method1=method1;
+        this.id  = 0;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Condition getCondition() {

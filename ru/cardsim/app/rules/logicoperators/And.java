@@ -5,6 +5,7 @@ package ru.cardsim.app.rules.logicoperators;
  */
 public class And extends LogicOperator {
     public And(boolean value1, boolean value2) {
+        super.setName(super.getName()+" -> And("+value1+","+value2+")");
         setResult(value1 && value2);
     }
 }

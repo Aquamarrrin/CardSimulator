@@ -5,6 +5,7 @@ package ru.cardsim.app.rules.logicoperators;
  */
 public class Or extends LogicOperator {
     public Or(boolean value1, boolean value2) {
+        super.setName(super.getName()+" -> Or("+value1+","+value2+")");
         setResult(value1 || value2);
     }
 }

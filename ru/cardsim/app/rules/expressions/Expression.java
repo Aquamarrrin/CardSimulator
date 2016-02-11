@@ -13,4 +13,5 @@ public class Expression {
     protected void setResult(boolean result) {
         this.result = result;
     }
+
 }

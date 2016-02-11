@@ -5,6 +5,11 @@ package ru.cardsim.app.rules.logicoperators;
  */
 public class LogicOperator {
     private boolean result;
+    private String name;
+
+    public LogicOperator() {
+        this.name="LogicOperator()";
+    }
 
     public boolean getResult() {
         return result;
@@ -12,5 +17,13 @@ public class LogicOperator {
 
     protected void setResult(boolean result) {
         this.result = result;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    protected void setName(String name) {
+        this.name = name;
     }
 }
