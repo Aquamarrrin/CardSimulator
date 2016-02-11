@@ -3,6 +3,7 @@ package ru.cardsim.app.creator;
 import ru.cardsim.app.entities.Entity;
 import ru.cardsim.app.rules.Rule;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -43,31 +44,33 @@ public class Editor {
                     System.out.println("Введите корректную команду");
                     break;
             }
-            if (comandStr.contains("cr ")){
-                if (comandStr.contains("cr e")){
+
+            String[] split = comandStr.split(" ");
+            if (split.length>=2 && split[0].equals("cr")){
+                if (split[1].equals("e")){
 
                 }
                 else{
-                    if (comandStr.contains("cr r")){
+                    if (split[1].equals("r")){
 
                     }
                 }
             }
             else{
-                if (comandStr.contains("sh ")){
-                    if (comandStr.contains("sh e")){
+                if (split.length>=2 && split[0].equals("sh")){
+                    if (split[1].equals("e")){
 
                     }
                     else{
-                        if (comandStr.contains("sh r")){
+                        if (split[1].equals("r")){
 
                         }
                         else {
-                            if (comandStr.contains("sh <id ") && comandStr.contains(">")){
+                            if (checkString(split[1])){
 
                             }
                             else {
-                                if (comandStr.contains("sh <idr ") && comandStr.contains(">")){
+                                if (split.length>=3 && split[1].equals("r") && checkString(split[2])){
 
                                 }
                             }
@@ -75,8 +78,9 @@ public class Editor {
                     }
                 }
                 else {
-                    if (comandStr.contains("<id ") && comandStr.contains(">.<")){
-                        if( comandStr.contains("> <")){
+                    if (split.length>=1 && split[0].contains(".")
+                            && checkString(split[0].substring(0,split[0].indexOf(".")))){
+                        if(split.length>=2){
 
                         }
                         else {
@@ -84,11 +88,13 @@ public class Editor {
                         }
                     }
                     else{
-                        if (comandStr.contains("<idr ") && comandStr.contains(".setMethod1 <")){
+                        if (split.length>=2 && checkString(split[0].substring(0,split[0].indexOf(".")))
+                                && split[0].contains(".setMethod1")){
 
                         }
                         else {
-                            if (comandStr.contains("<idr ") && comandStr.contains(".setMethod2 <")){
+                            if (split.length>=2 && checkString(split[0].substring(0,split[0].indexOf(".")))
+                                    && split[0].contains(".setMethod2")){
 
                             }
                         }
@@ -108,6 +114,16 @@ public class Editor {
         System.out.println("end\t\t\tвыход из редактора игры");
         System.out.println("info\t\t\tинформация об игре");
 
+    }
+
+
+    public boolean checkString(String string) {
+        try {
+            Integer.parseInt(string);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
 

@@ -12,7 +12,7 @@ sh r - Показать все правила
 sh <id> - Показать свойства сущности
 <id>.<name_of_property> <new_value> - Задать значение
 <id>.<name_of_property> - Посмотреть значение
-sh <idr правила> - Показать правило
+sh r <id правила> - Показать правило
 <id правила>.setMethod1 <name_of_method> - Задать Method1 правилу
 <id правила>.setMethod2 <name_of_method> - Задать Method2 правилу
 cr c -  Создать условие
