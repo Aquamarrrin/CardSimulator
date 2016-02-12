@@ -125,7 +125,12 @@ public class Editor {
         int id = Integer.parseInt(string.substring(0, string.indexOf(".")));
         for (Method m : methodsOfEntity) {
             if (m.getName().contains("get") && m.getName().equals(string.substring(string.indexOf(".") + 1)))
-                func(entities.get(id - 1), m, null);
+                try {
+                    System.out.println(func(entities.get(id - 1), m, null));
+                }catch (Exception e)
+                {
+                    System.out.println("Данной сущности не существует!");
+                }
         }
     }
 
@@ -141,19 +146,29 @@ public class Editor {
 
     //Показать конкретное правило
     private void showRule(String string) {
-        int id = Integer.parseInt(string);
-        System.out.println("Условие: " + rules.get(id - 1).getCondition().toString());
-        System.out.println("Метод1: " + rules.get(id - 1).getMethod1().getName());
-        System.out.println("id правила: " + rules.get(id - 1).getId());
-        System.out.println("-----------------------------------------");
+        try{
+            int id = Integer.parseInt(string);
+            System.out.println("Условие: " + rules.get(id - 1).getCondition().toString());
+            System.out.println("Метод1: " + rules.get(id - 1).getMethod1().getName());
+            System.out.println("id правила: " + rules.get(id - 1).getId());
+            System.out.println("-----------------------------------------");
+        } catch (Exception e)
+        {
+            System.out.println("Такого правила не существует!");
+        }
     }
 
     //Показать конкретную сущность
     private void showEntity(String string) {
-        int id = Integer.parseInt(string);
-        System.out.println("Имя сущности: " + entities.get(id - 1).getName());
-        System.out.println("id сущности: " + entities.get(id - 1).getId());
-        System.out.println("-----------------------------------------");
+        try {
+            int id = Integer.parseInt(string);
+            System.out.println("Имя сущности: " + entities.get(id - 1).getName());
+            System.out.println("id сущности: " + entities.get(id - 1).getId());
+            System.out.println("-----------------------------------------");
+        } catch (Exception e)
+        {
+            System.out.println("Такой сущности не существует!");
+        }
     }
 
     //Вывести все правила в терминал
@@ -231,23 +246,28 @@ public class Editor {
     }
 
     //Вызывает любую функцию
-    private void func(Method m, Object[] params) {
+    private Object func(Method m, Object[] params) {
         try {
             Class c = m.getDeclaringClass();
             Object t = c.newInstance();
             m.setAccessible(true);
-            m.invoke(t, params);
+            Object obj = m.invoke(t, params);
+            return obj;
         } catch (Exception e) {
             System.out.println("Ошибка!!!!!!!!!!!!!!!!!");
+            return null;
         }
     }
 
-    private void func(Object t, Method m, Object[] params) {
+    private Object func(Object t, Method m, Object[] params) {
         try {
             m.setAccessible(true);
             m.invoke(t, params);
+            Object obj = m.invoke(t, params);
+            return obj;
         } catch (Exception e) {
             System.out.println("Ошибка!!!!!!!!!!!!!!!!!");
+            return null;
         }
     }
 
