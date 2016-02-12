@@ -204,10 +204,17 @@ public class Editor {
 
     //Показать справку по командам данного раздела
     private void help() {
-        System.out.println("Эта программа создана 5.02.2016");
-        System.out.println("help\t\t\tвызов справки");
-        System.out.println("end\t\t\tвыход из редактора игры");
-        System.out.println("info\t\t\tинформация об игре");
+        System.out.println("help\t\t\t\t\t\tвызов справки");
+        System.out.println("end\t\t\t\t\t\tвыход из редактора игры");
+        System.out.println("info\t\t\t\t\t\tинформация об игре");
+        System.out.println("cr e\t\t\t\t\t\tсоздать пустую сущность");
+        System.out.println("cr r\t\t\t\t\t\tсоздать правило");
+        System.out.println("cr c\t\t\t\t\t\tсоздать условие");
+        System.out.println("sh e\t\t\t\t\t\tпоказать все сущности");
+        System.out.println("sh r\t\t\t\t\t\tпоказать все правила");
+        System.out.println("sh с\t\t\t\t\t\tпоказать все условия");
+        System.out.println("sh <id>\t\t\t\t\t\tпоказать конкретную сущность");
+        System.out.println("sh r <id>\t\t\t\t\t\tпоказать конкретное правило");
 
     }
 
