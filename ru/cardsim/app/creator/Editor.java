@@ -56,109 +56,153 @@ public class Editor {
 
             String[] split = comandStr.split(" ");
             if (split.length >= 2 && split[0].equals("cr")) {
-                //Создаем сущность
                 if (split[1].equals("e")) {
-                    countOfEntities = countOfEntities + 1;
-                    Entity newEntity = new Entity("new_entity" + countOfEntities, countOfEntities);
-                    entities.add(newEntity);
-                    System.out.println("Создана сущность с именем new_entity" + countOfEntities + " и id=" + countOfEntities);
-                } else {
+                    //Создаем сущность
+                    createEntity();
+                } else if (split[1].equals("r")) {
                     //Создаем правило
-                    if (split[1].equals("r")) {
-                        countOfRules = countOfRules + 1;
-                        Condition condition = new Condition(new LogicOperator());
-                        Rule newRule = new Rule(condition, allMethods[0]);
-                        newRule.setId(countOfRules);
-                        rules.add(newRule);
-                        System.out.println("Создано правило c Методом = " + allMethods[1].getName());
-                    }
+                    createRule();
+                } else if (split[1].equals("c")) {
+                    //Создаем условие
+
                 }
-            } else {
-                if (split.length >= 2 && split[0].equals("sh")) {
+            } else if (split.length >= 2 && split[0].equals("sh")) {
+                if (split[1].equals("e")) {
                     //Показать все сущности
-                    if (split[1].equals("e")) {
-                        for (int i = 0; i < entities.size(); i++) {
-                            System.out.println("Имя сущности: " + entities.get(i).getName());
-                            System.out.println("id сущности: " + entities.get(i).getId());
-                            System.out.println("-----------------------------------------");
-                        }
-                    } else {
-                        //Показать все правила
-                        if (split[1].equals("r") && split.length == 2) {
-                            for (int i = 0; i < rules.size(); i++) {
-                                System.out.println("Условие: " + rules.get(i).getCondition().toString());
-                                System.out.println("Метод1: " + rules.get(i).getMethod1().getName());
-                                System.out.println("id правила: " + rules.get(i).getId());
-                                System.out.println("-----------------------------------------");
-                            }
-                        } else {
-                            //Показать конкретную сущность
-                            if (checkString(split[1])) {
-                                int id = Integer.parseInt(split[1]);
-                                System.out.println("Имя сущности: " + entities.get(id - 1).getName());
-                                System.out.println("id сущности: " + entities.get(id - 1).getId());
-                                System.out.println("-----------------------------------------");
-                            } else {
-                                //Показать конкретное правило
-                                if (split.length >= 3 && split[1].equals("r") && checkString(split[2])) {
-                                    int id = Integer.parseInt(split[2]);
-                                    System.out.println("Условие: " + rules.get(id - 1).getCondition().toString());
-                                    System.out.println("Метод1: " + rules.get(id - 1).getMethod1().getName());
-                                    System.out.println("id правила: " + rules.get(id - 1).getId());
-                                    System.out.println("-----------------------------------------");
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    //Посмотреть или задать значение свойству конкретной сущности
-                    if (split.length >= 1 && split[0].contains(".")
-                            && checkString(split[0].substring(0, split[0].indexOf(".")))) {
-                        if (split.length >= 2) {
-                            Method[] methodsOfEntity = Entity.class.getDeclaredMethods();
-                            int id = Integer.parseInt(split[0].substring(0, split[0].indexOf(".")));
-                            for (Method m : methodsOfEntity) {
-                                if (m.getName().contains("set") && m.getName().equals(split[0].substring(split[0].indexOf(".") + 1)))
-                                    func(entities.get(id - 1), m, new Object[]{split[1]});
-                            }
-                        } else {
-                            Method[] methodsOfEntity = Entity.class.getDeclaredMethods();
-                            int id = Integer.parseInt(split[0].substring(0, split[0].indexOf(".")));
-                            for (Method m : methodsOfEntity) {
-                                if (m.getName().contains("get") && m.getName().equals(split[0].substring(split[0].indexOf(".") + 1)))
-                                    func(entities.get(id - 1), m, null);
-                            }
-                        }
-                    } else {
-                        //Задать Method1 правилу
-                        if (split.length >= 2 && checkString(split[0].substring(0, split[0].indexOf(".")))
-                                && split[0].contains(".setMethod1")) {
-                            int id = Integer.parseInt(split[0].substring(0, split[0].indexOf(".")));
-                            for (Method m : allMethods) {
-                                if (m.getName().equals(split[1]))
-                                    rules.get(id).setMethod1(m);
-                            }
-                        } else {
-                            //Задать Method2 правилу
-                            if (split.length >= 2 && checkString(split[0].substring(0, split[0].indexOf(".")))
-                                    && split[0].contains(".setMethod2")) {
-                                int id = Integer.parseInt(split[0].substring(0, split[0].indexOf(".")));
-                                for (Method m : allMethods) {
-                                    if (m.getName().equals(split[1]))
-                                        rules.get(id).setMethod2(m);
-                                }
-                            }
-                        }
-                    }
+                    showAllEntities();
+                } else if (split[1].equals("r") && split.length == 2) {
+                    //Показать все правила
+                    showAllRules();
+                } else if (checkString(split[1])) {
+                    //Показать конкретную сущность
+                    showEntity(split[1]);
+                } else if (split.length >= 3 && split[1].equals("r") && checkString(split[2])) {
+                    //Показать конкретное правило
+                    showRule(split[2]);
                 }
+            } else if (split.length >= 1 && split[0].contains(".")
+                            && checkString(split[0].substring(0, split[0].indexOf(".")))) {
+                if (split.length >= 2) {
+                    //Задать значение свойству конкретной сущности
+                    setPropertyValue(split);
+                } else {
+                    //Посмотреть значение свойства конкретной сущности
+                    getPropertyValue(split[0]);
+                }
+            } else if (split.length >= 2 && checkString(split[0].substring(0, split[0].indexOf(".")))
+                        && split[0].contains(".setMethod1")) {
+                    //Задать Method1 правилу
+                    setRuleMethod1(split);
+                } else if (split.length >= 2 && checkString(split[0].substring(0, split[0].indexOf(".")))
+                    && split[0].contains(".setMethod2")) {
+                //Задать Method2 правилу
+                setRuleMethod2(split);
             }
         }
     }
 
+    //Задать правило второй метод
+    private void setRuleMethod2(String[] split) {
+        int id = Integer.parseInt(split[0].substring(0, split[0].indexOf(".")));
+        for (Method m : allMethods) {
+            if (m.getName().equals(split[1]))
+                rules.get(id).setMethod2(m);
+        }
+    }
+
+    //Задать правилу первый метод
+    private void setRuleMethod1(String[] split) {
+        int id = Integer.parseInt(split[0].substring(0, split[0].indexOf(".")));
+        for (Method m : allMethods) {
+            if (m.getName().equals(split[1]))
+                rules.get(id).setMethod1(m);
+        }
+    }
+
+    //Получить значение свойства
+    private void getPropertyValue(String string) {
+        Method[] methodsOfEntity = Entity.class.getDeclaredMethods();
+        int id = Integer.parseInt(string.substring(0, string.indexOf(".")));
+        for (Method m : methodsOfEntity) {
+            if (m.getName().contains("get") && m.getName().equals(string.substring(string.indexOf(".") + 1)))
+                func(entities.get(id - 1), m, null);
+        }
+    }
+
+    //Задать значение свойству
+    private void setPropertyValue(String[] split) {
+        Method[] methodsOfEntity = Entity.class.getDeclaredMethods();
+        int id = Integer.parseInt(split[0].substring(0, split[0].indexOf(".")));
+        for (Method m : methodsOfEntity) {
+            if (m.getName().contains("set") && m.getName().equals(split[0].substring(split[0].indexOf(".") + 1)))
+                func(entities.get(id - 1), m, new Object[]{split[1]});
+        }
+    }
+
+    //Показать конкретное правило
+    private void showRule(String string) {
+        int id = Integer.parseInt(string);
+        System.out.println("Условие: " + rules.get(id - 1).getCondition().toString());
+        System.out.println("Метод1: " + rules.get(id - 1).getMethod1().getName());
+        System.out.println("id правила: " + rules.get(id - 1).getId());
+        System.out.println("-----------------------------------------");
+    }
+
+    //Показать конкретную сущность
+    private void showEntity(String string) {
+        int id = Integer.parseInt(string);
+        System.out.println("Имя сущности: " + entities.get(id - 1).getName());
+        System.out.println("id сущности: " + entities.get(id - 1).getId());
+        System.out.println("-----------------------------------------");
+    }
+
+    //Вывести все правила в терминал
+    private void showAllRules() {
+        for (int i = 0; i < rules.size(); i++) {
+            System.out.println("Условие: " + rules.get(i).getCondition().toString());
+            System.out.println("Метод1: " + rules.get(i).getMethod1().getName());
+            System.out.println("id правила: " + rules.get(i).getId());
+            System.out.println("-----------------------------------------");
+        }
+    }
+
+    //Вывести все сущности в терминал
+    private void showAllEntities() {
+        for (int i = 0; i < entities.size(); i++) {
+            System.out.println("Имя сущности: " + entities.get(i).getName());
+            System.out.println("id сущности: " + entities.get(i).getId());
+            System.out.println("-----------------------------------------");
+        }
+    }
+
+    //Создаем правило
+    private void createRule() {
+        countOfRules = countOfRules + 1;
+        Condition condition = new Condition(new LogicOperator());
+        Rule newRule = new Rule(condition, allMethods[0]);
+        newRule.setId(countOfRules);
+        rules.add(newRule);
+        System.out.println("Создано правило c Методом = " + allMethods[1].getName());
+    }
+
+    //Создаем сущность
+    private void createEntity() {
+        countOfEntities = countOfEntities + 1;
+        Entity newEntity = new Entity("new_entity" + countOfEntities, countOfEntities);
+        entities.add(newEntity);
+        System.out.println("Создана сущность с именем new_entity" + countOfEntities + " и id=" + countOfEntities);
+    }
+
+    private void createCondition(){
+
+    }
+
+    //Показать информацию о игре
     public void info() {
         System.out.println("Информация об игре " + name);
     }
 
+    //Показать справку по командам данного раздела
     private void help() {
         System.out.println("Эта программа создана 5.02.2016");
         System.out.println("help\t\t\tвызов справки");
@@ -168,6 +212,8 @@ public class Editor {
     }
 
 
+
+    //Проверяет, является ли строка числом
     public boolean checkString(String string) {
         try {
             Integer.parseInt(string);
@@ -177,6 +223,7 @@ public class Editor {
         return true;
     }
 
+    //Вызывает любую функцию
     private void func(Method m, Object[] params) {
         try {
             Class c = m.getDeclaringClass();
