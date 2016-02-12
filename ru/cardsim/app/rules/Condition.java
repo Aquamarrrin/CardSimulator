@@ -25,7 +25,11 @@ public class Condition {
         this.lo = lo;
     }
 
-    public String getNameLo() {
-        return lo.getName();
+    @Override
+    public String toString() {
+        return "Condition{" +
+                "result=" + result +
+                ", lo=" + lo +
+                '}';
     }
 }

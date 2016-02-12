@@ -6,7 +6,6 @@ package ru.cardsim.app.rules.logicoperators;
 public class Not extends LogicOperator {
 
     public Not(boolean value) {
-        super.setName(super.getName()+" -> Not("+value+")");
         setResult(!value);
     }
 

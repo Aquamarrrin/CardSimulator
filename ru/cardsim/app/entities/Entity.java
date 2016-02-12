@@ -1,11 +1,14 @@
 package ru.cardsim.app.entities;
 
+import java.util.HashMap;
+
 /**
  * Created by bombaster on 09.02.2016.
  */
 public class Entity {
     private String name;
     private int id;
+    private HashMap<Integer, Property> properties;
 
     public Entity() {
     }
@@ -30,4 +33,9 @@ public class Entity {
     public void setId(int id) {
         this.id = id;
     }
+
+    //addEntity
+
+    //setEntity(nameProperty, newValue)
+    //getEntity(nameProperty)
 }

@@ -76,4 +76,14 @@ public class Rule {
     public void setMethod2(Method method2) {
         this.method2 = method2;
     }
+
+    @Override
+    public String toString() {
+        return "Rule{" +
+                "condition=" + condition +
+                ", method1=" + method1 +
+                ", method2=" + method2 +
+                ", id=" + id +
+                '}';
+    }
 }
