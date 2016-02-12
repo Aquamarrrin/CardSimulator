@@ -9,5 +9,4 @@ public class Not extends LogicOperator {
         setResult(!value);
     }
 
-
 }
