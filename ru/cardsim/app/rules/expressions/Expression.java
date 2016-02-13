@@ -5,6 +5,10 @@ package ru.cardsim.app.rules.expressions;
  */
 public class Expression {
     private boolean result;
+    private int id;
+
+    public Expression() {
+    }
 
     public boolean getResult() {
         return result;
@@ -14,4 +18,11 @@ public class Expression {
         this.result = result;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

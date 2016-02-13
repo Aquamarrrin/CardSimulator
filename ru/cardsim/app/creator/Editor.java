@@ -29,6 +29,9 @@ public class Editor {
         this.name = name;
         this.entities = new ArrayList<>();
         this.rules = new ArrayList<>();
+        this.logicOperators = new ArrayList<>();
+        this.expressions = new ArrayList<>();
+        this.conditions = new ArrayList<>();
         this.countOfEntities = 0;
         this.countOfRules = 0;
         allMethods = Functions.class.getDeclaredMethods();
@@ -74,7 +77,7 @@ public class Editor {
 
                 } else if (split[1].equals("exp")) {
                     //Создаем выражение
-
+                    createExp();
                 }
             } else if (split.length >= 2 && split[0].equals("sh")) {
                 if (split[1].equals("e")) {
@@ -83,6 +86,9 @@ public class Editor {
                 } else if (split[1].equals("r") && split.length == 2) {
                     //Показать все правила
                     showAllRules();
+                } else if (split[1].equals("exp") && split.length == 2) {
+                    //Показать все выражения
+                    showAllExps();
                 } else if (checkString(split[1])) {
                     //Показать конкретную сущность
                     showEntity(split[1]);
@@ -91,7 +97,7 @@ public class Editor {
                     showRule(split[2]);
                 }
             } else if (split.length >= 1 && split[0].contains(".")
-                            && checkString(split[0].substring(0, split[0].indexOf(".")))) {
+                    && checkString(split[0].substring(0, split[0].indexOf(".")))) {
                 if (split.length >= 2) {
                     //Задать значение свойству конкретной сущности
                     setPropertyValue(split);
@@ -100,10 +106,10 @@ public class Editor {
                     getPropertyValue(split[0]);
                 }
             } else if (split.length >= 2 && checkString(split[0].substring(0, split[0].indexOf(".")))
-                        && split[0].contains(".setMethod1")) {
-                    //Задать Method1 правилу
-                    setRuleMethod1(split);
-                } else if (split.length >= 2 && checkString(split[0].substring(0, split[0].indexOf(".")))
+                    && split[0].contains(".setMethod1")) {
+                //Задать Method1 правилу
+                setRuleMethod1(split);
+            } else if (split.length >= 2 && checkString(split[0].substring(0, split[0].indexOf(".")))
                     && split[0].contains(".setMethod2")) {
                 //Задать Method2 правилу
                 setRuleMethod2(split);
@@ -137,8 +143,7 @@ public class Editor {
             if (m.getName().contains("get") && m.getName().equals(string.substring(string.indexOf(".") + 1)))
                 try {
                     System.out.println(func(entities.get(id - 1), m, null));
-                }catch (Exception e)
-                {
+                } catch (Exception e) {
                     System.out.println("Данной сущности не существует!");
                 }
         }
@@ -156,14 +161,13 @@ public class Editor {
 
     //Показать конкретное правило
     private void showRule(String string) {
-        try{
+        try {
             int id = Integer.parseInt(string);
             System.out.println("Условие: " + rules.get(id - 1).getCondition().toString());
             System.out.println("Метод1: " + rules.get(id - 1).getMethod1().getName());
             System.out.println("id правила: " + rules.get(id - 1).getId());
             System.out.println("-----------------------------------------");
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("Такого правила не существует!");
         }
     }
@@ -175,8 +179,7 @@ public class Editor {
             System.out.println("Имя сущности: " + entities.get(id - 1).getName());
             System.out.println("id сущности: " + entities.get(id - 1).getId());
             System.out.println("-----------------------------------------");
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("Такой сущности не существует!");
         }
     }
@@ -218,8 +221,20 @@ public class Editor {
         System.out.println("Создана сущность с именем new_entity" + countOfEntities + " и id=" + countOfEntities);
     }
 
-    private void createCondition(){
+    //Создаение выражения
+    private void createExp() {
+        Expression expression = new Expression();
+        expression.setId(expressions.size() + 1);
+        expressions.add(expression);
+        System.out.println("Создано пустое выражение, и ему присвоен id=" + expressions.size());
+    }
 
+    //Вывести все выражения в терминал
+    private void showAllExps() {
+        for (int i = 0; i < expressions.size(); i++) {
+            System.out.println("id выражения: " + expressions.get(i).getId());
+            System.out.println("-----------------------------------------");
+        }
     }
 
     //Показать информацию о игре
@@ -287,7 +302,6 @@ public class Editor {
         System.out.println("del exp <id>\t\t\t\t\t\tудалить конкретное выражение");
 
     }
-
 
 
     //Проверяет, является ли строка числом
