@@ -274,6 +274,46 @@ public class Editor {
         }
     }
 
+    //Добавить новое свойство
+    private void addNewProperty(String[] split) {
+        int id = Integer.parseInt(split[0].substring(0, split[0].indexOf(".")));
+        if(split[0].substring(split[0].indexOf(".") + 1).equals("addProperty")) {
+            if (checkString(split[2])){
+                Integer num = Integer.parseInt(split[2]);
+                entities.get(id - 1).addProperty(split[1],num);
+            }
+            else {
+                entities.get(id - 1).addProperty(split[1], split[2]);
+            }
+        }
+    }
+
+    //Добавить новое значение к свойству
+    private void setValueForNewProperty(String[] split) {
+        int id = Integer.parseInt(split[0].substring(0, split[0].indexOf(".")));
+        if(split[0].substring(split[0].indexOf(".") + 1).equals("setProperty")) {
+            if (checkString(split[2])){
+                Integer num = Integer.parseInt(split[2]);
+                entities.get(id - 1).setProperty(split[1],num);
+            }
+            else {
+                entities.get(id - 1).setProperty(split[1], split[2]);
+            }
+        }
+    }
+
+    //Добавить новое свойство
+    private void getNewPropertyValue(String[] split) {
+        int id = Integer.parseInt(split[0].substring(0, split[0].indexOf(".")));
+        if(split[0].substring(split[0].indexOf(".") + 1).equals("getProperty")) {
+            try {
+                System.out.println(entities.get(id - 1).getProperty(split[1]));
+            } catch (Exception e) {
+                System.out.println("Данной сущности не существует!");
+            }
+        }
+    }
+
     //Показать конкретное правило
     private void showRule(String string) {
         try {
