@@ -13,5 +13,7 @@ public class Under extends Expression {
         setId(e.getId());
         setType("UNDER");
         setResult(value1<value2);
+        setValue1(value1);
+        setValue2(value2);
     }
 }

@@ -17,6 +17,8 @@ public class Equals extends Expression {
         setId(e.getId());
         setType("EQUALS");
         setResult(value1==value2);
+        setValue1(value1);
+        setValue2(value2);
     }
 
     public Equals(Expression e, String value1, String value2)
@@ -24,6 +26,8 @@ public class Equals extends Expression {
         setId(e.getId());
         setType("EQUALS");
         setResult(value1.equals(value2));
+        setValue1(value1);
+        setValue2(value2);
     }
 
 }

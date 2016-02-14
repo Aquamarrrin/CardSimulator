@@ -4,7 +4,7 @@ import ru.cardsim.app.Functions;
 import ru.cardsim.app.entities.Entity;
 import ru.cardsim.app.rules.Condition;
 import ru.cardsim.app.rules.Rule;
-import ru.cardsim.app.rules.expressions.Expression;
+import ru.cardsim.app.rules.expressions.*;
 import ru.cardsim.app.rules.logicoperators.LogicOperator;
 
 import java.lang.reflect.Method;
@@ -18,8 +18,8 @@ public class Editor {
     private String name;
     private ArrayList<Entity> entities;
     private ArrayList<Rule> rules;
-    private ArrayList<LogicOperator> logicOperators;
     private ArrayList<Expression> expressions;
+    private ArrayList<LogicOperator> logicOperators;
     private ArrayList<Condition> conditions;
     private int countOfEntities;
     private int countOfRules;
@@ -37,15 +37,16 @@ public class Editor {
         allMethods = Functions.class.getDeclaredMethods();
     }
 
+    //Запуск терминала для редактора
     public void run() {
         boolean exit = false;
-        String comandStr = "";
+        String commandStr = "";
         System.out.println("Редактор игры " + name);
         System.out.println("/Главное меню/Редактор/Редактор игры " + name + "/");
         Scanner in = new Scanner(System.in);
         while (!exit) {
             System.out.print(">");
-            switch (comandStr = in.nextLine()) {
+            switch (commandStr = in.nextLine()) {
                 case "end":
                     exit = true;
                     System.out.println("Выход из редактора игры " + name);
@@ -61,7 +62,7 @@ public class Editor {
 //                    break;
             }
 
-            String[] split = comandStr.split(" ");
+            String[] split = commandStr.split(" ");
             if (split.length >= 2 && split[0].equals("cr")) {
                 if (split[1].equals("e")) {
                     //Создаем сущность
@@ -107,6 +108,14 @@ public class Editor {
                     && (split[1].split("\\.")[1].equals("getType"))) {
                 //Вывести в терминал тип конкретного выражения
                 showExpType(split[1].split("\\.")[0]);
+            } else if (split.length == 4 && split[0].equals("exp") && (checkString(split[1].split("\\.")[0]))
+                    && (split[1].split("\\.")[1].equals("setVV"))) {
+                //Задать выражению значение + значение
+                setExpVV(split);
+            } else if (split.length == 2 && split[0].equals("exp") && (checkString(split[1].split("\\.")[0]))
+                    && (split[1].split("\\.")[1].equals("getValues"))) {
+                //Получить все значения конкретного выражения
+                getExpValues(split[1].split("\\.")[0]);
             } else if (split.length >= 1 && split[0].contains(".")
                     && checkString(split[0].substring(0, split[0].indexOf(".")))) {
                 if (split.length == 2) {
@@ -120,6 +129,82 @@ public class Editor {
         }
     }
 
+    //Получить все значения конкретного выражения
+    private void getExpValues(String s) {
+        try{
+            //Получаем выражение
+            Expression expression = expressions.get(Integer.valueOf(s) - 1);
+            //Выводим значения
+            System.out.println("value 1: "+expression.getValue1());
+            System.out.println("value 2: "+expression.getValue2());
+            System.out.println("-----------------------------------------");
+
+        } catch(IndexOutOfBoundsException e){
+            System.out.println("Выражения с таким id не существует!");
+        }
+    }
+
+    //Задать выражению значение + значение
+    private void setExpVV(String[] split) {
+        try {
+            //Сначала узнаем тип выражения
+            //Получаем выражение
+            Expression expression = expressions.get(Integer.valueOf(split[1].split("\\.")[0]) - 1);
+            //Получаем id выражения
+            int id = expression.getId();
+            //Получаем тип выражения
+            String type = expression.getType();
+            if (type.equals("EQUALS")) {
+                //Проверяем типы значений
+                if (checkString(split[2]) && checkString(split[3])) {
+                    //Оба целые числа
+                    expressions.set(id - 1, new Equals(expression, Integer.valueOf(split[2]), Integer.valueOf(split[3])));
+                } else {
+                    //Оба строки
+                    expressions.set(id - 1, new Equals(expression, split[2], split[3]));
+                }
+                System.out.println("Выражению присвоены значения: " + split[2] + "," + split[3]);
+                System.out.println("-----------------------------------------");
+            }
+            else if(type.equals("OVER")){
+                //Оба целые числа
+                expressions.set(id - 1, new Over(expression, Integer.valueOf(split[2]), Integer.valueOf(split[3])));
+                System.out.println("Выражению присвоены значения: " + split[2] + "," + split[3]);
+                System.out.println("-----------------------------------------");
+            }
+            else if(type.equals("UNDER")){
+                //Оба целые числа
+                expressions.set(id - 1, new Under(expression, Integer.valueOf(split[2]), Integer.valueOf(split[3])));
+                System.out.println("Выражению присвоены значения: " + split[2] + "," + split[3]);
+                System.out.println("-----------------------------------------");
+            }
+            else if(type.equals("UNDER_EQUALS")){
+                //Оба целые числа
+                expressions.set(id - 1, new UnderEquals(expression, Integer.valueOf(split[2]), Integer.valueOf(split[3])));
+                System.out.println("Выражению присвоены значения: " + split[2] + "," + split[3]);
+                System.out.println("-----------------------------------------");
+            }
+            else if(type.equals("OVER_EQUALS")){
+                //Оба целые числа
+                expressions.set(id - 1, new OverEquals(expression, Integer.valueOf(split[2]), Integer.valueOf(split[3])));
+                System.out.println("Выражению присвоены значения: " + split[2] + "," + split[3]);
+                System.out.println("-----------------------------------------");
+            }
+            else
+                System.out.println("Вы ввели не верные типы выражений");
+
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("Выражения с таким id не существует!");
+        }
+        catch (NullPointerException e){
+            System.out.println("Вы не задали выражению тип! Используйте команду exp <id>.setType <type>");
+        }
+        catch (Exception e){
+            System.out.println("Вы ввели не верные типы значений для выражения!!!");
+        }
+    }
+
+    //Вывести в терминал тип конкретного выражения
     private void showExpType(String id_exp) {
         try {
             System.out.println("type: " + expressions.get(Integer.valueOf(id_exp) - 1).getType());
@@ -129,6 +214,7 @@ public class Editor {
         }
     }
 
+    //Задать тип конкретному выражению
     private void setExpType(String[] split) {
         try {
             if (split[2].equals("EQUALS") || split[2].equals("OVER")
@@ -146,7 +232,7 @@ public class Editor {
         }
     }
 
-    //Задать правило второй метод
+    //Задать правилу второй метод(Пока не используем, т.к. чтобы реализовать обработку правил, нужны выражения, операторы и условия)
     private void setRuleMethod2(String[] split) {
         int id = Integer.parseInt(split[0].substring(0, split[0].indexOf(".")));
         for (Method m : allMethods) {
@@ -155,7 +241,7 @@ public class Editor {
         }
     }
 
-    //Задать правилу первый метод
+    //Задать правилу первый метод(Пока не используем, т.к. чтобы реализовать обработку правил, нужны выражения, операторы и условия)
     private void setRuleMethod1(String[] split) {
         int id = Integer.parseInt(split[0].substring(0, split[0].indexOf(".")));
         for (Method m : allMethods) {
@@ -264,6 +350,8 @@ public class Editor {
             System.out.println("id : " + expressions.get(i).getId());
             System.out.println("result : " + expressions.get(i).getResult());
             System.out.println("type : " + expressions.get(i).getType());
+            System.out.println("value 1: " + expressions.get(i).getValue1());
+            System.out.println("value 2: " + expressions.get(i).getValue2());
             System.out.println("-----------------------------------------");
         }
     }
@@ -275,6 +363,8 @@ public class Editor {
             System.out.println("id : " + expressions.get(id - 1).getId());
             System.out.println("result : " + expressions.get(id - 1).getResult());
             System.out.println("type : " + expressions.get(id - 1).getType());
+            System.out.println("value 1: " + expressions.get(id - 1).getValue1());
+            System.out.println("value 2: " + expressions.get(id - 1).getValue2());
             System.out.println("-----------------------------------------");
         } catch (Exception e) {
             System.out.println("Такого выражения не существует!");

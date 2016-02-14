@@ -13,5 +13,7 @@ public class Over extends Expression {
         setId(e.getId());
         setType("OVER");
         setResult(value1>value2);
+        setValue1(value1);
+        setValue2(value2);
     }
 }

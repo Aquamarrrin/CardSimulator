@@ -13,5 +13,7 @@ public class UnderEquals extends Expression {
         setId(e.getId());
         setType("UNDER_EQUALS");
         setResult(value1<=value2);
+        setValue1(value1);
+        setValue2(value2);
     }
 }
