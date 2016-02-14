@@ -12,5 +12,18 @@ public class Equals extends Expression {
         setResult(value1==value2);
     }
 
+    public Equals(Expression e, int value1, int value2)
+    {
+        setId(e.getId());
+        setType("EQUALS");
+        setResult(value1==value2);
+    }
+
+    public Equals(Expression e, String value1, String value2)
+    {
+        setId(e.getId());
+        setType("EQUALS");
+        setResult(value1.equals(value2));
+    }
 
 }

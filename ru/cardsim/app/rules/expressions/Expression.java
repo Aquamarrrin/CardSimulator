@@ -6,6 +6,7 @@ package ru.cardsim.app.rules.expressions;
 public class Expression {
     private boolean result;
     private int id;
+    private String type;
 
     public Expression() {
     }
@@ -24,5 +25,13 @@ public class Expression {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

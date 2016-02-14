@@ -95,25 +95,53 @@ public class Editor {
                 } else if (split.length >= 3 && split[1].equals("r") && checkString(split[2])) {
                     //Показать конкретное правило
                     showRule(split[2]);
+                } else if (split.length >= 3 && split[1].equals("exp") && checkString(split[2])) {
+                    //Показать конкретное выражение
+                    showExp(split[2]);
                 }
+            } else if (split.length == 3 && split[0].equals("exp") && (checkString(split[1].split("\\.")[0]))
+                    && (split[1].split("\\.")[1].equals("setType"))) {
+                //Задать тип конкретному выражению
+                setExpType(split);
             } else if (split.length >= 1 && split[0].contains(".")
                     && checkString(split[0].substring(0, split[0].indexOf(".")))) {
-                if (split.length >= 2) {
+                if (split.length == 2) {
                     //Задать значение свойству конкретной сущности
                     setPropertyValue(split);
                 } else {
                     //Посмотреть значение свойства конкретной сущности
                     getPropertyValue(split[0]);
                 }
-            } else if (split.length >= 2 && checkString(split[0].substring(0, split[0].indexOf(".")))
-                    && split[0].contains(".setMethod1")) {
-                //Задать Method1 правилу
-                setRuleMethod1(split);
-            } else if (split.length >= 2 && checkString(split[0].substring(0, split[0].indexOf(".")))
-                    && split[0].contains(".setMethod2")) {
-                //Задать Method2 правилу
-                setRuleMethod2(split);
             }
+        }
+    }
+
+    private void setExpType(String[] split) {
+        try {
+            switch (split[2]) {
+                case "EQUALS":
+                    expressions.get(Integer.valueOf(split[1].split("\\.")[0]) - 1).setType("EQUALS");
+                    break;
+                case "OVER":
+                    expressions.get(Integer.valueOf(split[1].split("\\.")[0]) - 1).setType("OVER");
+                    break;
+                case "UNDER":
+                    expressions.get(Integer.valueOf(split[1].split("\\.")[0]) - 1).setType("UNDER");
+                    break;
+                case "OVER_EQUALS":
+                    expressions.get(Integer.valueOf(split[1].split("\\.")[0]) - 1).setType("OVER_EQUALS");
+                    break;
+                case "UNDER_EQUALS":
+                    expressions.get(Integer.valueOf(split[1].split("\\.")[0]) - 1).setType("UNDER_EQUALS");
+                    break;
+                default:
+                    System.out.println("Такой тип задать нельзя! Возможные варианты: EQUALS, OVER, UNDER, OVER_EQUALS, UNDER_EQUALS");
+                    break;
+            }
+            System.out.println("Выражению id="+Integer.valueOf(split[1].split("\\.")[0])+" задан тип "+split[2]);
+        }catch (IndexOutOfBoundsException e)
+        {
+            System.out.println("Выражения с таким id не существует!");
         }
     }
 
@@ -232,8 +260,23 @@ public class Editor {
     //Вывести все выражения в терминал
     private void showAllExps() {
         for (int i = 0; i < expressions.size(); i++) {
-            System.out.println("id выражения: " + expressions.get(i).getId());
+            System.out.println("id : " + expressions.get(i).getId());
+            System.out.println("result : " + expressions.get(i).getResult());
+            System.out.println("type : " + expressions.get(i).getType());
             System.out.println("-----------------------------------------");
+        }
+    }
+
+    //Показать конкретное выражение
+    private void showExp(String string) {
+        try {
+            int id = Integer.parseInt(string);
+            System.out.println("id : " + expressions.get(id - 1).getId());
+            System.out.println("result : " + expressions.get(id - 1).getResult());
+            System.out.println("type : " + expressions.get(id - 1).getType());
+            System.out.println("-----------------------------------------");
+        } catch (Exception e) {
+            System.out.println("Такого выражения не существует!");
         }
     }
 
