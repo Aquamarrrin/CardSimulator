@@ -336,12 +336,11 @@ public class Editor {
         System.out.println("sh exp\t\t\t\t\t\tпоказать все выражения");
         System.out.println("exp <id>.setType <type>\t\t\t\t\t\tзадать тип выражения");
         System.out.println("exp <id>.getType <type>\t\t\t\t\t\tпосмотреть тип выражения");
-        System.out.println("exp <id>.setValue1 <value>\t\t\t\t\t\tзадать первое значение выражению");
-        System.out.println("exp <id>.setValue2 <value>\t\t\t\t\t\tзадать второе значение выражению");
-        System.out.println("exp <id>.setProperty1 <id_entity>.<name_property>\t\t\t\t\t\tзадать значение свойства сущности");
-        System.out.println("exp <id>.setProperty2 <id_entity>.<name_property>\t\t\t\t\t\tзадать значение свойства сущности");
-        System.out.println("exp <id>.getValue1\t\t\t\t\t\tпосмотреть второе значение выражения");
-        System.out.println("exp <id>.getValue2\t\t\t\t\t\tпосмотреть второе значение выражения");
+        System.out.println("exp <id>.setVV <value> <value>\t\t\t\t\t\tзадать значение + значение");
+        System.out.println("exp <id>.setPV <id>.<name> <value>\t\t\t\t\t\tзадать свойство + значение");
+        System.out.println("exp <id>.setPP <id>.<name> <id>.<name>\t\t\t\t\t\tзадать свойство + свойство");
+        System.out.println("exp <id>.setVP <value> <id>.<name>\t\t\t\t\t\tзадать значение + свойство");
+        System.out.println("exp <id>.getValues\t\t\t\t\t\tпосмотреть значения выражения");
         System.out.println("del exp\t\t\t\t\t\tудалить все выражения");
         System.out.println("del exp <id>\t\t\t\t\t\tудалить конкретное выражение");
 
