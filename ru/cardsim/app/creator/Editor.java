@@ -103,6 +103,10 @@ public class Editor {
                     && (split[1].split("\\.")[1].equals("setType"))) {
                 //Задать тип конкретному выражению
                 setExpType(split);
+            } else if (split.length == 2 && split[0].equals("exp") && (checkString(split[1].split("\\.")[0]))
+                    && (split[1].split("\\.")[1].equals("getType"))) {
+                //Вывести в терминал тип конкретного выражения
+                showExpType(split[1].split("\\.")[0]);
             } else if (split.length >= 1 && split[0].contains(".")
                     && checkString(split[0].substring(0, split[0].indexOf(".")))) {
                 if (split.length == 2) {
@@ -116,31 +120,28 @@ public class Editor {
         }
     }
 
+    private void showExpType(String id_exp) {
+        try {
+            System.out.println("type: " + expressions.get(Integer.valueOf(id_exp) - 1).getType());
+            System.out.println("-----------------------------------------");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Выражения с таким id не существует!");
+        }
+    }
+
     private void setExpType(String[] split) {
         try {
-            switch (split[2]) {
-                case "EQUALS":
-                    expressions.get(Integer.valueOf(split[1].split("\\.")[0]) - 1).setType("EQUALS");
-                    break;
-                case "OVER":
-                    expressions.get(Integer.valueOf(split[1].split("\\.")[0]) - 1).setType("OVER");
-                    break;
-                case "UNDER":
-                    expressions.get(Integer.valueOf(split[1].split("\\.")[0]) - 1).setType("UNDER");
-                    break;
-                case "OVER_EQUALS":
-                    expressions.get(Integer.valueOf(split[1].split("\\.")[0]) - 1).setType("OVER_EQUALS");
-                    break;
-                case "UNDER_EQUALS":
-                    expressions.get(Integer.valueOf(split[1].split("\\.")[0]) - 1).setType("UNDER_EQUALS");
-                    break;
-                default:
-                    System.out.println("Такой тип задать нельзя! Возможные варианты: EQUALS, OVER, UNDER, OVER_EQUALS, UNDER_EQUALS");
-                    break;
+            if (split[2].equals("EQUALS") || split[2].equals("OVER")
+                    || split[2].equals("OVER_EQUALS")
+                    || split[2].equals("UNDER")
+                    || split[2].equals("UNDER_EQUALS")) {
+                expressions.get(Integer.valueOf(split[1].split("\\.")[0]) - 1).setType(split[2]);
+                System.out.println("Выражению id=" + Integer.valueOf(split[1].split("\\.")[0]) + " задан тип " + split[2]);
+            } else {
+                System.out.println("Такой тип задать нельзя! Возможные варианты: EQUALS, OVER, UNDER, OVER_EQUALS, UNDER_EQUALS");
             }
-            System.out.println("Выражению id="+Integer.valueOf(split[1].split("\\.")[0])+" задан тип "+split[2]);
-        }catch (IndexOutOfBoundsException e)
-        {
+            System.out.println("-----------------------------------------");
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Выражения с таким id не существует!");
         }
     }
