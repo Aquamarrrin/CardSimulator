@@ -118,28 +118,41 @@ public class Editor {
                 getExpValues(split[1].split("\\.")[0]);
             } else if (split.length >= 1 && split[0].contains(".")
                     && checkString(split[0].substring(0, split[0].indexOf(".")))) {
+                String tempStr = split[0].substring(split[0].indexOf(".") + 1);
                 if (split.length == 2) {
-                    //Задать значение свойству конкретной сущности
-                    setPropertyValue(split);
-                } else {
+                    if (!tempStr.equals("getProperty")) {
+                        //Задать значение свойству конкретной сущности
+                        setPropertyValue(split);
+                    } else {
+                        //Вывести на экран новое свойство
+                        getNewPropertyValue(split);
+                    }
+                } else if (split.length == 1) {
                     //Посмотреть значение свойства конкретной сущности
                     getPropertyValue(split[0]);
+                } else if (tempStr.equals("addProperty")) {
+                    //Добавить новое свойство к сущности
+                    addNewProperty(split);
+                } else if (tempStr.equals("setProperty")) {
+                    //Изменить новое свойство
+                    setValueForNewProperty(split);
                 }
             }
         }
     }
 
+
     //Получить все значения конкретного выражения
     private void getExpValues(String s) {
-        try{
+        try {
             //Получаем выражение
             Expression expression = expressions.get(Integer.valueOf(s) - 1);
             //Выводим значения
-            System.out.println("value 1: "+expression.getValue1());
-            System.out.println("value 2: "+expression.getValue2());
+            System.out.println("value 1: " + expression.getValue1());
+            System.out.println("value 2: " + expression.getValue2());
             System.out.println("-----------------------------------------");
 
-        } catch(IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Выражения с таким id не существует!");
         }
     }
@@ -165,41 +178,34 @@ public class Editor {
                 }
                 System.out.println("Выражению присвоены значения: " + split[2] + "," + split[3]);
                 System.out.println("-----------------------------------------");
-            }
-            else if(type.equals("OVER")){
+            } else if (type.equals("OVER")) {
                 //Оба целые числа
                 expressions.set(id - 1, new Over(expression, Integer.valueOf(split[2]), Integer.valueOf(split[3])));
                 System.out.println("Выражению присвоены значения: " + split[2] + "," + split[3]);
                 System.out.println("-----------------------------------------");
-            }
-            else if(type.equals("UNDER")){
+            } else if (type.equals("UNDER")) {
                 //Оба целые числа
                 expressions.set(id - 1, new Under(expression, Integer.valueOf(split[2]), Integer.valueOf(split[3])));
                 System.out.println("Выражению присвоены значения: " + split[2] + "," + split[3]);
                 System.out.println("-----------------------------------------");
-            }
-            else if(type.equals("UNDER_EQUALS")){
+            } else if (type.equals("UNDER_EQUALS")) {
                 //Оба целые числа
                 expressions.set(id - 1, new UnderEquals(expression, Integer.valueOf(split[2]), Integer.valueOf(split[3])));
                 System.out.println("Выражению присвоены значения: " + split[2] + "," + split[3]);
                 System.out.println("-----------------------------------------");
-            }
-            else if(type.equals("OVER_EQUALS")){
+            } else if (type.equals("OVER_EQUALS")) {
                 //Оба целые числа
                 expressions.set(id - 1, new OverEquals(expression, Integer.valueOf(split[2]), Integer.valueOf(split[3])));
                 System.out.println("Выражению присвоены значения: " + split[2] + "," + split[3]);
                 System.out.println("-----------------------------------------");
-            }
-            else
+            } else
                 System.out.println("Вы ввели не верные типы выражений");
 
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Выражения с таким id не существует!");
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println("Вы не задали выражению тип! Используйте команду exp <id>.setType <type>");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Вы ввели не верные типы значений для выражения!!!");
         }
     }
@@ -277,40 +283,40 @@ public class Editor {
     //Добавить новое свойство
     private void addNewProperty(String[] split) {
         int id = Integer.parseInt(split[0].substring(0, split[0].indexOf(".")));
-        if(split[0].substring(split[0].indexOf(".") + 1).equals("addProperty")) {
-            if (checkString(split[2])){
+        try {
+            if (checkString(split[2])) {
                 Integer num = Integer.parseInt(split[2]);
-                entities.get(id - 1).addProperty(split[1],num);
+                this.entities.get(id - 1).addProperty(split[1], num);
+            } else {
+                this.entities.get(id - 1).addProperty(split[1], split[2]);
             }
-            else {
-                entities.get(id - 1).addProperty(split[1], split[2]);
-            }
+        } catch (Exception e) {
+            System.out.println("Данной сущности не существует!");
         }
     }
 
     //Добавить новое значение к свойству
     private void setValueForNewProperty(String[] split) {
         int id = Integer.parseInt(split[0].substring(0, split[0].indexOf(".")));
-        if(split[0].substring(split[0].indexOf(".") + 1).equals("setProperty")) {
-            if (checkString(split[2])){
+        try {
+            if (checkString(split[2])) {
                 Integer num = Integer.parseInt(split[2]);
-                entities.get(id - 1).setProperty(split[1],num);
-            }
-            else {
+                entities.get(id - 1).setProperty(split[1], num);
+            } else {
                 entities.get(id - 1).setProperty(split[1], split[2]);
             }
+        } catch (Exception e) {
+            System.out.println("Данной сущности не существует!");
         }
     }
 
     //Добавить новое свойство
     private void getNewPropertyValue(String[] split) {
         int id = Integer.parseInt(split[0].substring(0, split[0].indexOf(".")));
-        if(split[0].substring(split[0].indexOf(".") + 1).equals("getProperty")) {
-            try {
-                System.out.println(entities.get(id - 1).getProperty(split[1]));
-            } catch (Exception e) {
-                System.out.println("Данной сущности не существует!");
-            }
+        try {
+            System.out.println(entities.get(id - 1).getProperty(split[1]));
+        } catch (Exception e) {
+            System.out.println("Данной сущности не существует!");
         }
     }
 

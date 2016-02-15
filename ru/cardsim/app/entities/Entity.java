@@ -16,6 +16,8 @@ public class Entity {
     }
 
     public Entity(String name, int id) {
+        properties = new HashMap<>();
+        namesAndIDsOfProperties = new HashMap<>();
         this.name = name;
         this.id = id;
         this.countOfProperties = 0;
@@ -47,19 +49,21 @@ public class Entity {
 
     //Задаём новое значение свойству
     public void setProperty(String nameOfProperty, Object value){
-       if (namesAndIDsOfProperties.containsKey(nameOfProperty))
-       {
+        try{
            Property<Object> newProperty = new Property<>(nameOfProperty,value);
            properties.put(namesAndIDsOfProperties.get(nameOfProperty),newProperty);
-       }
+        } catch (Exception e){
+            System.out.println("Такого свойства не существует!");
+        }
     }
 
     //Возвращает значение свойства
     public Object getProperty(String nameOfProperty){
-        if (namesAndIDsOfProperties.containsKey(nameOfProperty))
-        {
-           return properties.get(namesAndIDsOfProperties.get(nameOfProperty)).getValue();
+        try{
+            return properties.get(namesAndIDsOfProperties.get(nameOfProperty)).getValue();
+        } catch (Exception e){
+            System.out.println("Такого свойства не существует!");
+            return null;
         }
-        return null;
     }
 }
